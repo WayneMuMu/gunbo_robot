@@ -1,0 +1,120 @@
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find nkg_robot_description)/urdf/default_macro.xacro"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+    <xacro:property name="body_width" value="0.45"/>
+    <xacro:property name="body_height" value="1.2"/>
+
+    <xacro:macro name="arm_r" params="parent">
+        <!-- ============== Motor 1 ============== -->
+        <xacro:macro_link name="M1_link" mesh="h42_20.stl" xyz="0 -0.084 0" rpy="${PI/2} 0 0"/>
+        <xacro:joint_fixed name="arm_r_base_joint" link0="${parent}_link" link1="M1_link" xyz="0 -${body_width/2} ${body_height+0.0825}" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_1_1_link" mesh="NKG_ARM_A.stl" xyz="0 -0.0325 0" rpy="${PI/2} 0 0"/>
+        <xacro:joint_motor name="M1_joint" link0="M1_link" link1="armr_1_1_link" xyz="0 -0.084 0" rpy="0 0 0" lower="-${PI/2}" upper="${PI/2}" axis="0 -1 0"/>
+
+        <!-- ============== Motor 2 ============== -->
+        <xacro:macro_link name="armr_1_2_link" mesh="NKG_ARM_B.stl" xyz="0 0 0" rpy="-${PI/2} 0 0"/>
+        <xacro:joint_fixed name="armr_1_1_link_joint" link0="armr_1_1_link" link1="armr_1_2_link" xyz="0 -0.0325 0" rpy="0 0 0"/>
+
+        <xacro:macro_link name="M2_link" mesh="h42_20.stl" xyz="-0.042 -0.021 0" rpy="0 -${PI/2} 0"/>
+        <xacro:joint_fixed name="armr_1_2_link_joint" link0="armr_1_2_link" link1="M2_link" xyz="0 -0.015 0" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_2_1_link" mesh="ARM_1.stl" xyz="0 0 -0.0145" rpy="0 ${PI/2} -${PI/2}"/>
+        <xacro:joint_motor name="M2_joint" link0="M2_link" link1="armr_2_1_link" xyz="0 -0.021 0" rpy="0 0 0" lower="-${PI/2}" upper="${PI/2}" axis="-1 0 0"/>
+
+
+        <!-- ============== Motor 3 ============== -->
+        <xacro:macro_link name="armr_2_2_link" mesh="ARM_2.stl" xyz="0 0 -0.043525" rpy="0 0 ${PI/6}"/>
+        <xacro:joint_fixed name="armr_2_1_joint" link0="armr_2_1_link" link1="armr_2_2_link" xyz="0 0 -0.053" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_2_3_link" mesh="NKG_ARM_B.stl" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="armr_2_2_joint" link0="armr_2_2_link" link1="armr_2_3_link" xyz="0 0 -0.08705" rpy="0 0 0"/>
+
+        <xacro:macro_link name="M3_link" mesh="h42_20.stl" xyz="-0.042 0 -0.021" rpy="0 -${PI/2} 0"/>
+        <xacro:joint_fixed name="armr_2_3_joint" link0="armr_2_3_link" link1="M3_link" xyz="0 0 -0.015" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_3_1_link" mesh="ARM_1.stl" xyz="0 0 -0.0145" rpy="0 ${PI/2} -${PI/2}"/>
+        <xacro:joint_motor name="M3_joint" link0="M3_link" link1="armr_3_1_link" xyz="0 0 -0.021" rpy="0 0 0" lower="-${PI*5/6}" upper="${PI/6}" axis="-1 0 0"/>
+
+
+        <!-- ============== Motor 4 ============== -->
+        <xacro:macro_link name="armr_3_2_link" mesh="ARM_4.stl" xyz="0 0 -0.0265" rpy="-${PI} 0 0"/>
+        <xacro:joint_fixed name="armr_3_1_joint" link0="armr_3_1_link" link1="armr_3_2_link" xyz="0 0 -0.053" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_3_3_link" mesh="ARM_3.stl" xyz="0 0 -0.0115" rpy="0 -${PI/2} ${PI/2}"/>
+        <xacro:joint_fixed name="armr_3_2_joint" link0="armr_3_2_link" link1="armr_3_3_link" xyz="0 0 -0.053" rpy="0 0 0"/>
+
+        <xacro:macro_link name="M4_link" mesh="m42_10.stl" xyz="0 0 -0.066" rpy="-${PI/2} 0 0"/>
+        <xacro:joint_fixed name="armr_3_3_joint" link0="armr_3_3_link" link1="M4_link" xyz="0 0 -0.005" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_4_1_link" mesh="NKG_ARM_A.stl" xyz="0 0 -0.0325" rpy="${PI} 0 ${PI/6}"/>
+        <xacro:joint_motor name="M4_joint" link0="M4_link" link1="armr_4_1_link" xyz="0 0 -0.072" rpy="0 0 0" lower="-${PI*6/5}" upper="${PI*6/5}" axis="0 0 -1"/>
+
+
+        <!-- ============== Motor 5 ============== -->
+        <xacro:macro_link name="armr_4_2_link" mesh="NKG_ARM_B.stl" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="armr_4_1_joint" link0="armr_4_1_link" link1="armr_4_2_link" xyz="0 0 -0.0325" rpy="0 0 0"/>
+
+        <xacro:macro_link name="M5_link" mesh="h42_20.stl" xyz="0 -0.042 -0.021" rpy="0 -${PI/2} ${PI/2}"/>
+        <xacro:joint_fixed name="armr_4_2_joint" link0="armr_4_2_link" link1="M5_link" xyz="0 0 -0.015" rpy="0 0 0"/>
+
+        <xacro:macro_link name="armr_5_1_link" mesh="ARM_1.stl" xyz="0 0 -0.0145" rpy="0 ${PI/2} ${PI}"/>
+        <xacro:joint_motor name="M5_joint" link0="M5_link" link1="armr_5_1_link" xyz="0 0 -0.021" rpy="0 0 0" lower="-${PI/6}" upper="${PI*5/6}" axis="0 -1 0"/>
+
+
+        <!-- ============== Motor 6 ============== -->
+        <xacro:macro_link name="armr_5_2_link" mesh="ARM_3.stl" xyz="0 0 -0.0115" rpy="0 -${PI/2} 0"/>
+        <xacro:joint_fixed name="armr_5_1_joint" link0="armr_5_1_link" link1="armr_5_2_link" xyz="0 0 -0.053" rpy="0 0 0"/>
+
+        <xacro:macro_link name="M6_link" mesh="m42_10.stl" xyz="0 0 -0.066" rpy="-${PI/2} 0 0"/>
+        <xacro:joint_fixed name="armr_5_2_joint" link0="armr_5_2_link" link1="M6_link" xyz="0 0 -0.005" rpy="0 0 0"/>
+
+        <xacro:macro_link name="grip_r_box_link" mesh="NKG_ARM_BOX.stl" xyz="0 0 0" rpy="0 0 -${PI/2}"/>
+        <xacro:joint_motor name="M6_joint" link0="M6_link" link1="grip_r_box_link" xyz="0 0 -0.072" rpy="0 0 0" lower="-${PI/2}" upper="${PI/2}" axis="0 0 -1"/>
+
+        <!-- ============== gripper left ============== -->
+        <xacro:macro_link name="grip_r_l_link" mesh="NKG_ARM_GRIPPER.stl" xyz="0 -0.01 -0.08" rpy="${PI/2} 0 ${PI/2}"/>
+        <joint name="grip_r_l_joint" type="fixed">
+            <parent link="grip_r_box_link"/>
+            <child link="grip_r_l_link"/>
+            <origin xyz="0 0 -0.0515" rpy="0 0 0"/>
+            <!-- <axis xyz="0 1 0"/> -->
+            <!-- <limit effort="300.0" lower="-0.03" upper="0" velocity="1.0"/> -->
+        </joint>
+
+        <xacro:macro_link name="grip_r_r_link" mesh="NKG_ARM_GRIPPER.stl" xyz="0 0.01 -0.08" rpy="${PI/2} 0 -${PI/2}"/>
+        <joint name="grip_r_r_joint" type="fixed">
+            <parent link="grip_r_box_link"/>
+            <child link="grip_r_r_link"/>
+            <origin xyz="0 0 -0.0515" rpy="0 0 0"/>
+        </joint>
+
+        <xacro:macro_link name="grip_r_funnel_link" mesh="funnel.stl" xyz="0.04625 0 0" rpy="0 -${PI/2} 0"/>
+        <xacro:joint_fixed name="grip_r_funnel_joint" link0="grip_r_r_link" link1="grip_r_funnel_link" xyz="0 0 -0.062" rpy="0 0 0"/>
+
+        <link name="grip_r_ball">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="0.039"/>
+                </geometry>
+                <material name="white"/>
+            </visual>
+            <collision>
+                <origin xyz="0.039 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="0.025"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="grip_r_ball_joint" type="fixed">
+            <parent link="grip_r_funnel_link"/>
+            <child link="grip_r_ball"/>
+            <origin xyz="-0.089 0 0" rpy="0 0 0"/>
+        </joint>
+	<!-- ============== gripper end ============== -->
+
+    </xacro:macro>
+</robot>
+

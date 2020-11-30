@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="NKG_ROBOT">
+
+    <!-- base, arm and gripper -->
+    <xacro:include filename="$(find nkg_robot_description)/urdf/nkg_base.urdf.xacro"/>
+    <xacro:include filename="$(find nkg_robot_description)/urdf/nkg_arm_l.urdf.xacro"/>
+    <xacro:include filename="$(find nkg_robot_description)/urdf/nkg_arm_r.urdf.xacro"/>
+
+    <!-- Materials for visualzation-->
+    <xacro:include filename="$(find nkg_robot_description)/urdf/materials.urdf.xacro"/>
+    <xacro:include filename="$(find realsense2_description)/urdf/_materials.urdf.xacro" />
+
+    <!-- Define arm with gripper on a base -->
+    <xacro:base name="base"/>
+    <xacro:arm_l parent="base"/>
+    <xacro:arm_r parent="base"/>
+
+    <!-- The follwoings are for realsense -->
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+  
+    <!-- The following values are approximate, and the camera node
+     publishing TF values with actual calibrated camera extrinsic values -->
+    <xacro:property name="d435_cam_depth_to_infra1_offset" value="0.0"/>
+    <xacro:property name="d435_cam_depth_to_infra2_offset" value="-0.050"/>
+    <xacro:property name="d435_cam_depth_to_color_offset" value="0.015"/>
+
+    <!-- The following values model the aluminum peripherial case for the
+  	D435 camera, with the camera joint represented by the actual
+  	peripherial camera tripod mount -->
+    <xacro:property name="d435_cam_width" value="0.090"/>
+    <xacro:property name="d435_cam_height" value="0.025"/>
+    <xacro:property name="d435_cam_depth" value="0.02505"/>
+    <xacro:property name="d435_cam_mount_from_center_offset" value="0.0149"/>
+
+    <!-- The following offset is relative the the physical D435 camera peripherial
+  	camera tripod mount -->
+    <xacro:property name="d435_cam_depth_px" value="${d435_cam_mount_from_center_offset}"/>
+    <xacro:property name="d435_cam_depth_py" value="0.0175"/>
+    <xacro:property name="d435_cam_depth_pz" value="${d435_cam_height/2}"/>
+
+    <xacro:property name="origin">
+      <origin xyz="0 0 0.1" rpy="0 0 0" />
+    </xacro:property>
+
+    <joint name="$mount_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="link_head3"/>
+      <child link="mount_bottom_screw_frame" />
+    </joint>
+    <link name="mount_bottom_screw_frame"/>
+
+    <joint name="mount_link_joint" type="fixed">
+      <origin xyz="0 ${d435_cam_depth_py} ${d435_cam_depth_pz}" rpy="0 0 0"/>
+      <parent link="mount_bottom_screw_frame"/>
+      <child link="mount_link" />
+    </joint>
+
+    <link name="mount_link">
+      <visual>
+        <origin xyz="${d435_cam_mount_from_center_offset} ${-d435_cam_depth_py} 0" rpy="${M_PI/2} 0 ${M_PI/2}"/>
+        <geometry>
+	        <mesh filename="package://realsense2_description/meshes/d435.dae" />
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 ${-d435_cam_depth_py} 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${d435_cam_depth} ${d435_cam_width} ${d435_cam_height}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <!-- The following are not reliable values, and should not be used for modeling -->
+        <mass value="0.564" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+      </inertial>
+    </link>
+
+</robot>

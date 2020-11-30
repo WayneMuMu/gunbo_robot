@@ -1,0 +1,8 @@
+arm_l:
+  kinematics_solver: gunbo_robot_arm_l/IKFastKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+gripper_l:
+  kinematics_solver: trac_ik_kinematics_plugin/TRAC_IKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005

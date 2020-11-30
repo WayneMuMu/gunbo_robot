@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="NKG_ROBOT">
+
+    <!-- base, arm and gripper -->
+    <xacro:include filename="$(find nkg_robot_description)/urdf/nkg_base.urdf.xacro"/>
+    <xacro:include filename="$(find nkg_robot_description)/urdf/nkg_arm_l.urdf.xacro"/>
+    <xacro:include filename="$(find nkg_robot_description)/urdf/nkg_arm_r.urdf.xacro"/>
+
+    <!-- Materials for visualzation-->
+    <xacro:include filename="$(find nkg_robot_description)/urdf/materials.urdf.xacro"/>
+
+    <!-- Define arm with gripper on a base -->
+    <xacro:base name="base"/>
+    <xacro:arm_l parent="base"/>
+    <xacro:arm_r parent="base"/>
+
+</robot>
+

@@ -1,0 +1,13 @@
+controller_list:
+  - name: fake_gripper_l_controller
+    joints:
+      - M14_joint
+  - name: fake_arm_l_controller
+#    type: via points
+    joints:
+      - M8_joint
+      - M9_joint
+      - M10_joint
+      - M11_joint
+      - M12_joint
+      - M13_joint

@@ -1,0 +1,60 @@
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="PI" value="3.1415926536"/>
+    <xacro:macro name="macro_link" params="name mesh xyz rpy">
+        <link name="${name}">
+            <visual>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <mesh filename="package://nkg_robot_description/meshes/${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="white"/>
+            </visual>
+            <collision>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <mesh filename="package://nkg_robot_description/meshes/${mesh}" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="joint_fixed" params="name link0 link1 xyz rpy">
+        <joint name="${name}" type="fixed">
+            <parent link="${link0}"/>
+            <child link="${link1}"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="joint_motor" params="name link0 link1 xyz rpy lower upper axis">
+        <joint name="${name}" type="revolute">
+            <parent link="${link0}"/>
+            <child link="${link1}"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+            <limit effort="30" velocity="10" lower="${lower}" upper="${upper}"/>
+            <axis xyz="${axis}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="macro_box" params="name size xyz rpy">
+        <link name="${name}">
+            <visual>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <box size="${size}"/>
+                </geometry>
+                <material name="white"/>
+            </visual>
+            <collision>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <box size="${size}"/>
+                </geometry>
+                <material name="white"/>
+            </collision>
+        </link>
+    </xacro:macro>
+
+
+</robot>

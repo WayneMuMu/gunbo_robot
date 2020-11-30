@@ -1,0 +1,62 @@
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find nkg_robot_description)/urdf/default_macro.xacro"/>
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+    <xacro:property name="wheel_radius" value="0.1015"/>
+    <xacro:property name="wheel_height" value="0.078"/>
+    <xacro:property name="body_width" value="0.45"/>
+    <xacro:property name="body_height" value="1.2"/>
+    <xacro:property name="safe_zone" value="0.04"/>
+    <xacro:property name="table_width" value="${0.402+safe_zone}"/>
+    <xacro:property name="table_length" value="${0.766+safe_zone}"/>
+    <xacro:property name="table_thick" value="${0.02+0.01}"/>
+    <xacro:property name="robot_center_x" value="0.103"/>
+    <xacro:property name="table_height" value="0.86"/>
+
+    <xacro:macro name="wheel_link" params="name xyz rpy">
+        <link name="${name}">
+            <visual>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <cylinder length="${wheel_height}" radius="${wheel_radius}"/>
+                </geometry>
+                <material name="white"/>
+            </visual>
+            <collision>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <cylinder length="${wheel_height}" radius="${wheel_radius}"/>
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="base" params="name">
+        <xacro:macro_link name="${name}_link" mesh="gunbo_body.stl" xyz="0 0 0.1365" rpy="${PI} 0 0"/>
+
+        <xacro:macro_box name="link_table" size="${table_width} ${table_length} ${table_thick}" xyz="0.201 0.158 -${table_thick/2}" rpy="0 0 0"/>
+        <xacro:joint_fixed name="joint_table" link0="${name}_link" link1="link_table" xyz="${robot_center_x} 0 ${table_height}" rpy="0 0 0"/>
+
+        <xacro:wheel_link name="link_wheel_l1" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="wheel_l1" link0="${name}_link" link1="link_wheel_l1" xyz="0.22 ${body_width/2+wheel_height/2} ${wheel_radius}" rpy="${PI/2} 0 0"/>
+
+        <xacro:wheel_link name="link_wheel_l2" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="wheel_l2" link0="${name}_link" link1="link_wheel_l2" xyz="-0.22 ${body_width/2+wheel_height/2} ${wheel_radius}" rpy="${PI/2} 0 0"/>
+
+        <xacro:wheel_link name="link_wheel_r1" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="wheel_r1" link0="${name}_link" link1="link_wheel_r1" xyz="0.22 -${body_width/2+wheel_height/2} ${wheel_radius}" rpy="${-PI/2} 0 0"/>
+
+        <xacro:wheel_link name="link_wheel_r2" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="wheel_r2" link0="${name}_link" link1="link_wheel_r2" xyz="-0.22 -${body_width/2+wheel_height/2} ${wheel_radius}" rpy="${-PI/2} 0 0"/>
+
+        <xacro:macro_link name="link_head1" mesh="gunbo_head_1.stl" xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:joint_fixed name="head_1" link0="${name}_link" link1="link_head1" xyz="0.077 0 ${body_height+0.1365}" rpy="0 0 0"/>
+
+        <xacro:macro_link name="link_head2" mesh="gunbo_head_2.stl" xyz="0 0 -0.189" rpy="${PI/2} 0 ${PI/2}"/>
+        <xacro:joint_fixed name="head_2" link0="link_head1" link1="link_head2" xyz="0 0 0.0945" rpy="0 0 0"/>
+
+        <xacro:macro_link name="link_head3" mesh="gunbo_head_3.stl" xyz="0 0 0" rpy="0 0 ${PI}"/>
+        <xacro:joint_fixed name="head_3" link0="link_head2" link1="link_head3" xyz="0 0 0.017" rpy="0 0 0"/>
+
+    </xacro:macro>
+</robot>

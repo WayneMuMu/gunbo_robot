@@ -1,0 +1,5 @@
+<launch>
+  <node name="nkg_exe_node" pkg="nkg_exe" type="nkg_exe_node" output="screen" ns="move_group">
+    <rosparam command="load" file="$(find nkg_moveit_config)/config/ompl_planning.yaml"/>
+  </node>
+</launch>

@@ -1,0 +1,23 @@
+# Simulation settings for using moveit_sim_controllers
+moveit_sim_hw_interface:
+  joint_model_group: gripper_l
+  joint_model_group_pose: home
+
+controller_list:
+  - name: gripper_l_controller
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - M14_joint
+  - name: arm_l_controller
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - M8_joint
+      - M9_joint
+      - M10_joint
+      - M11_joint
+      - M12_joint
+      - M13_joint
